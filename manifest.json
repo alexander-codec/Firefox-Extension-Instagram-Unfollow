@@ -1,0 +1,23 @@
+{
+  "description": "Veja quem não me seguiu de volta no Instagram | See who hasn't followed me back on Instagram",
+  "manifest_version": 2,
+  "name": "Instragram Unfollow",
+  "author": "Johnendz",
+  "version": "1.0",
+
+  "content_scripts": [
+    {
+      "matches": ["*://www.instagram.com/*"],
+      "exclude_matches": ["*://www.instagram.com/developer/*"],
+      "css":["style.css"],
+	  "js":["script.js"],
+	  "run_at": "document_start"
+    }
+  ],
+  
+  "icons": {
+	"32": "icons/32.png",
+	"64": "icons/64.png",
+	"128": "icons/128.png"
+  }
+}
