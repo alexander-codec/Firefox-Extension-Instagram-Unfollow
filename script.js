@@ -70,8 +70,6 @@ async function makeNextRequest(nextCurser, listConfig) {
 	        var users = [];
 	        if (curser) {
 	            makeNextRequest(curser, listConfig);
-	        } else {
-				localStorage.setItem("followers", JSON.stringify(allFollowers));
 	        }
 	    }
 		xhr.open("GET", requestUrl);
@@ -94,8 +92,8 @@ async function makeNextRequest(nextCurser, listConfig) {
 	        var users = [];
 	        if (curser) {
 	            makeNextRequest(curser, listConfig);
-	        } else {
-				localStorage.setItem("following", JSON.stringify(allFollowing));
+	        }else {
+				unfollow(allFollowers, allFollowing);
 	        }
 	    }
 		xhr.open("GET", requestUrl);
@@ -103,18 +101,24 @@ async function makeNextRequest(nextCurser, listConfig) {
 	}
 }
 
-if ("followers" in localStorage || "following" in localStorage) {
+if ("unfollow" in localStorage) {
     //console.log('armazenado');
-	var a1 = JSON.parse(localStorage.getItem("followers"));
-	var a2 = JSON.parse(localStorage.getItem("following"));
-	console.log(unfollow(a1, a2));
+	console.log(JSON.parse(localStorage.getItem("unfollow")));
+	var tempo = JSON.parse(localStorage.getItem("unfollowDate"));
+	var atual = new Date();
+	var expira = new Date(tempo);
+	if (atual.getTime() > expira.getTime()){
+		localStorage.removeItem("unfollow");
+		localStorage.removeItem("unfollowDate");
+	}
 } else {
     //console.log('armazenando...');
 	makeNextRequest("", config.followers);
 	makeNextRequest("", config.following);
+	unfollow(allFollowers, allFollowing);
 }
 
-function unfollow (a1, a2) {
+function unfollow(a1, a2) {
 	
     var a = [], diff = [];
 
@@ -133,6 +137,10 @@ function unfollow (a1, a2) {
     for (var k in a) {
         diff.push(k);
     }
-
-    return diff;console.log(diff);
+	localStorage.setItem("unfollow", JSON.stringify(diff));
+	var date = new Date();
+	date.setDate(date.getDate() + 1);
+	var tempo = date.getTime();
+	localStorage.setItem("unfollowDate", tempo);
+    return diff;
 }
