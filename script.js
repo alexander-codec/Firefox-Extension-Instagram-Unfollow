@@ -116,6 +116,7 @@ if ("unfollow" in localStorage) {
 	makeNextRequest("", config.followers);
 	makeNextRequest("", config.following);
 	unfollow(allFollowers, allFollowing);
+	console.log("Reload Page");
 }
 
 function unfollow(a1, a2) {
